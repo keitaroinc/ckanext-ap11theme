@@ -5,17 +5,17 @@ from ckan.common import _
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-DEFAULT_EUROVOC_CATEGORY_NAME = 'eurovoc_category'
+DEFAULT_AP11THEME_CATEGORY_NAME = 'ap11theme_category'
 
 
-class EurovocPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
+class AP11ThemePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
-    '''Provides helpers and validators to manage Eurovoc top-level categories.
+    '''Provides helpers and validators to manage ap11theme top-level categories.
 
-    EurovocPlugin does not add anything to the ckan dataset schema or
+    AP11ThemePlugin does not add anything to the ckan dataset schema or
     templates. Either modify the schema and add templates in your own
-    extension, or use the `EurovocDatasetPlugin` extension by adding
-    `eurovoc_dataset` to `ckan.plugins`.
+    extension, or use the `AP11ThemeDatasetPlugin` extension by adding
+    `ap11theme_dataset` to `ckan.plugins`.
     '''
 
     plugins.implements(plugins.IConfigurable)
@@ -31,24 +31,24 @@ class EurovocPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # eurovoc_category is used as the field name in the package schema.
         # This can be customised in ckan config by setting a value for
         # `ckanext.eurovoc.field_name`.
-        self.eurovoc_category = DEFAULT_EUROVOC_CATEGORY_NAME
+        self.ap11theme_category = DEFAULT_AP11THEME_CATEGORY_NAME
 
     # IConfigurable
 
     def configure(self, config):
-        '''Set up EurovocPlugin from config options in ckan config.
+        '''Set up AP11ThemePlugin from config options in ckan config.
 
         Get and parse a categories config file to determine the correct label
-        language and additional search terms for each eurovoc category.
+        language and additional search terms for each AP11Theme category.
 
-        Set self.eurovoc_category as the field used in the package schema, if
-        defined in `ckanext.eurovoc.category_field_name`.
+        Set self.ap11theme_category as the field used in the package schema, if
+        defined in `ckanext.ap11theme.category_field_name`.
         '''
-        categories_config_filename = config.get('ckanext.eurovoc.categories',
+        categories_config_filename = config.get('ckanext.ap11theme.categories',
                                                 None)
         # If no filename is defined in the config, default to en.
         if categories_config_filename is None:
-            categories_config_filename = 'categories_en.json'
+            categories_config_filename = 'categories_se.json'
 
         categories_json = os.path.join(os.path.dirname(__file__),
                                        'categories',
@@ -58,25 +58,25 @@ class EurovocPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             self.categories = json.load(categories_list)
 
         # Custom category field name for dataset schema.
-        category_field_name = config.get('ckanext.eurovoc.category_field_name',
+        category_field_name = config.get('ckanext.ap11theme.category_field_name',
                                          None)
         if category_field_name is not None:
-            self.eurovoc_category = category_field_name
+            self.ap11theme_category = category_field_name
 
     # ITemplateHelpers
 
     def get_helpers(self):
         return {
-            'eurovoc_categories': self._eurovoc_categories_helper,
-            'eurovoc_category_field_name': self._get_eurovoc_category_field_name,
-            'eurovoc_category_label': self._eurovoc_text_output
+            'ap11theme_categories': self._ap11theme_categories_helper,
+            'ap11theme_category_field_name': self._get_ap11theme_category_field_name,
+            'ap11theme_category_label': self._ap11theme_text_output
         }
 
     # IValidators
 
     def get_validators(self):
         return {
-            'eurovoc_text_output': self._eurovoc_text_output,
+            'ap11theme_text_output': self._ap11theme_text_output,
         }
 
     # IFacets
@@ -94,50 +94,51 @@ class EurovocPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return facets_dict
 
     def _update_facets(self, facets_dict):
-        '''Add `eurovoc_category_label` to facets if not already present.'''
-        if 'eurovoc_category_label' not in facets_dict:
+        '''Add `ap11theme_category_label` to facets if not already present.'''
+        if 'ap11theme_category_label' not in facets_dict:
             facets_dict.update({
-                'eurovoc_category_label': plugins.toolkit._('Eurovoc Categories')
+                'ap11theme_category_label': plugins.toolkit._('Categories')
             })
 
     # IPackageController
 
     def before_index(self, dataset_dict):
         '''
-        Insert `eurovoc_category_label` and `vocab_eurovoc_category_terms`
-        into solr index derived from the dataset_dict's `eurovoc_category`
+        Insert `ap11theme_category_label` and `vocab_ap11theme_category_terms`
+        into solr index derived from the dataset_dict's `ap11theme_category`
         field.
         '''
-        eurovoc_category = dataset_dict.get(self.eurovoc_category, None)
-        if eurovoc_category is not None:
-            label = self._eurovoc_text_output(eurovoc_category)
+        ap11theme_category = dataset_dict.get(self.ap11theme_category, None)
+        
+        if ap11theme_category is not None:
+            label = self._ap11theme_text_output(ap11theme_category)
             search_terms = []
             if label is not None:
                 search_terms.append(label)
-                dataset_dict['eurovoc_category_label'] = label
+                dataset_dict['ap11theme_category_label'] = label
 
-            additional_search_terms = self._eurovoc_additional_search_terms(eurovoc_category)
+            additional_search_terms = self._ap11theme_additional_search_terms(ap11theme_category)
             if additional_search_terms is not None:
                 search_terms.extend(additional_search_terms)
-                dataset_dict['vocab_eurovoc_category_terms'] = search_terms
+                dataset_dict['vocab_ap11theme_category_terms'] = search_terms
 
         return dataset_dict
 
     # Private methods
 
-    def _eurovoc_categories_helper(self):
+    def _ap11theme_categories_helper(self):
         '''
-        Return a list of (id, label) tuples representing toplevel Eurovoc
+        Return a list of (id, label) tuples representing toplevel AP11Theme
         categories.
         '''
-        eurovoc_categories = [(cat['id'], cat['label']) for cat in
+        ap11theme_categories = [(cat['id'], cat['label']) for cat in
                               self.categories]
-        eurovoc_categories.insert(0, ('', _('No category')))
-        return eurovoc_categories
+        ap11theme_categories.insert(0, ('', _('No category')))
+        return ap11theme_categories
 
-    def _get_eurovoc_category_field_name(self):
-        '''Return the eurovoc category field name for this instance.'''
-        return self.eurovoc_category
+    def _get_ap11theme_category_field_name(self):
+        '''Return the ap11theme category field name for this instance.'''
+        return self.ap11theme_category
 
     def _get_value_for_key_in_category(self, id, key):
         '''
@@ -153,11 +154,11 @@ class EurovocPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         else:
             return None
 
-    def _eurovoc_text_output(self, id):
+    def _ap11theme_text_output(self, id):
         '''Return the label value for a given category id.'''
         return self._get_value_for_key_in_category(id, 'label')
 
-    def _eurovoc_additional_search_terms(self, id):
+    def _ap11theme_additional_search_terms(self, id):
         '''
         Return a list of additional search terms for a given category
         id.
@@ -165,10 +166,10 @@ class EurovocPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return self._get_value_for_key_in_category(id, 'additional_search_terms')
 
 
-class EurovocDatasetPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
+class AP11ThemeDatasetPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     '''
-    A drop-in plugin to add the eurovoc category field to the dataset schema.
+    A drop-in plugin to add the ap11theme category field to the dataset schema.
     '''
 
     plugins.implements(plugins.IDatasetForm)
@@ -177,7 +178,7 @@ class EurovocDatasetPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
-        self.eurovoc_category = DEFAULT_EUROVOC_CATEGORY_NAME
+        self.ap11theme_category = DEFAULT_AP11THEME_CATEGORY_NAME
 
     # IConfigurer
 
@@ -187,23 +188,23 @@ class EurovocDatasetPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # IConfigurable
 
     def configure(self, config):
-        '''Set up EurovocDatasetPlugin from config options in ckan config.
+        '''Set up AP11ThemeDatasetPlugin from config options in ckan config.
 
-        Set self.eurovoc_category to use in the package schema, if defined in
-        `ckanext.eurovoc.category_field_name`.
+        Set self.ap11theme_category to use in the package schema, if defined in
+        `ckanext.ap11theme.category_field_name`.
         '''
 
         # Custom category field name for dataset schema.
-        category_field_name = config.get('ckanext.eurovoc.category_field_name',
+        category_field_name = config.get('ckanext.ap11theme.category_field_name',
                                          None)
         if category_field_name is not None:
-            self.eurovoc_category = category_field_name
+            self.ap11theme_category = category_field_name
 
     # IDatasetForm
 
     def _modify_package_schema(self, schema):
         schema.update({
-            self.eurovoc_category: [
+            self.ap11theme_category: [
                 toolkit.get_validator('ignore_missing'),
                 toolkit.get_converter('convert_to_extras')
             ]
@@ -211,21 +212,21 @@ class EurovocDatasetPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return schema
 
     def create_package_schema(self):
-        schema = super(EurovocDatasetPlugin, self).create_package_schema()
+        schema = super(AP11ThemeDatasetPlugin, self).create_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
 
     def update_package_schema(self):
-        schema = super(EurovocDatasetPlugin, self).update_package_schema()
+        schema = super(AP11ThemeDatasetPlugin, self).update_package_schema()
         schema = self._modify_package_schema(schema)
         return schema
 
     def show_package_schema(self):
-        schema = super(EurovocDatasetPlugin, self).show_package_schema()
+        schema = super(AP11ThemeDatasetPlugin, self).show_package_schema()
         schema.update({
-            self.eurovoc_category: [
+            self.ap11theme_category: [
                 toolkit.get_converter('convert_from_extras'),
-                toolkit.get_validator('eurovoc_text_output'),
+                toolkit.get_validator('ap11theme_text_output'),
                 toolkit.get_validator('ignore_missing')
             ]
         })

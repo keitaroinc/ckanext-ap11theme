@@ -1,0 +1,11 @@
+{% ckan_extends %}
+
+{% block extras scoped %}
+  {% if pkg_dict[h.ap11theme_category_field_name()] %}
+    <tr>
+      <th scope="row" class="dataset-label">{{ _("AP11 Themes") }}</th>
+      <td class="dataset-details">{{ pkg_dict[h.ap11theme_category_field_name()] }}</td>
+    </tr>
+  {% endif %}
+  {{ super() }}
+{% endblock %}

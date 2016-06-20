@@ -1,2 +1,2 @@
 include README.rst
-recursive-include ckanext/eurovoc *.html *.json *.js *.less *.css *.config
+recursive-include ckanext/ap11theme *.html *.json *.js *.less *.css *.config

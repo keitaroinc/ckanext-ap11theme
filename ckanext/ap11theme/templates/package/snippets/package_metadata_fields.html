@@ -1,0 +1,16 @@
+{% ckan_extends %}
+
+{% block package_metadata_fields %}
+  <div class="control-group">
+    <label class="control-label" for="field-ap11theme_category">{{ _("AP11 Theme") }}</label>
+    <div class="controls">
+      <select id="field-ap11theme_category" name="{{ h.ap11theme_category_field_name() }}" data-module="autocomplete">
+        {% set ap11theme_category_data = data.get(h.ap11theme_category_field_name(), '') %}
+        {% for ap11theme_category in h.ap11theme_categories()  %}
+          <option value="{{ ap11theme_category[0] }}" {% if ap11theme_category[1] == ap11theme_category_data %}selected="selected"{% endif %}>{{ ap11theme_category[1] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  {{ super() }}
+{% endblock %}

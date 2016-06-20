@@ -12,7 +12,7 @@
 ckanext-eurovoc
 ===============
 
-Add top-level Eurovoc categories to CKAN for search and filtering.
+Add top-level dcat AP theme categories to CKAN for search and filtering.
 
 
 ------------
@@ -36,11 +36,11 @@ To install ckanext-eurovoc:
 
      . /usr/lib/ckan/default/bin/activate
 
-2. Install the ckanext-eurovoc Python package into your virtual environment::
+2. Install the ckanext-ap11theme Python package into your virtual environment::
 
-     pip install ckanext-eurovoc
+     pip install ckanext-ap11theme
 
-3. Add ``eurovoc`` to the ``ckan.plugins`` setting in your CKAN
+3. Add ``ap11theme`` to the ``ckan.plugins`` setting in your CKAN
    config file (by default the config file is located at
    ``/etc/ckan/default/production.ini``).
 
@@ -53,11 +53,11 @@ To install ckanext-eurovoc:
 Development Installation
 ------------------------
 
-To install ckanext-eurovoc for development, activate your CKAN virtualenv and
+To install ckanext-ap11theme for development, activate your CKAN virtualenv and
 do::
 
     git clone https://github.com/ckan/ckanext-eurovoc.git
-    cd ckanext-eurovoc
+    cd ckanext-ap11theme
     python setup.py develop
     pip install -r dev-requirements.txt
 
@@ -66,37 +66,37 @@ do::
 Configuration
 -------------
 
-The Eurovoc plugin doesn't automatically change CKAN templates or add a Eurovoc
+The ap11theme plugin doesn't automatically change CKAN templates or add a dcat ap11 theme
 category field to your dataset schema.
 
-If you want to add eurovoc category values to your schema, you will need to
+If you want to add dcat ap11 theme category values to your schema, you will need to
 modify the dataset schema in your own extension and add form widgets to the
 appropriate templates.
 
-You can use the example templates in ``eurovoc/templates/package/snippets`` to
-add a form field for creating or editing Eurovoc category values in a dataset.
+You can use the example templates in ``ap11theme/templates/package/snippets`` to
+add a form field for creating or editing dcat ap11 theme category values in a dataset.
 
 If you aren't adding your own extension, or you aren't modifying the dataset
-schema, you can add the optional ``eurovoc_dataset`` plugin to
-``ckan.plugins`` to integrate the Eurovoc category field into your schema and
+schema, you can add the optional ``ap11theme_dataset`` plugin to
+``ckan.plugins`` to integrate the dcat ap11 theme category field into your schema and
 templates.
 
-If you are defining your own Eurovoc category field name, ensure you have set
-it as the value for ``ckanext.eurovoc.category_field_name``, as mentioned
+If you are defining your own dcat ap11 theme category field name, ensure you have set
+it as the value for ``ckanext.ap11theme.category_field_name``, as mentioned
 below.
 
 
-ckanext.eurovoc.categories
+ckanext.ap11theme.categories
 ++++++++++++++++++++++++++
 
-The display language for Eurovoc category labels and additional solr search
+The display language for dcat ap11 theme category labels and additional solr search
 terms are defined in category configuration files. These should be placed in
-``eurovoc/categories/categories_*.json``, where '*' is the two-letter
+``ap11theme/categories/categories_*.json``, where '*' is the two-letter
 country code for the language used.
 
 The category config file to be used is defined in ckan config::
 
-    ckanext.eurovoc.categories = categories_se.json  # sweden
+    ckanext.ap11theme.categories = categories_se.json  # sweden
 
 If no categories file is defined, ``categories_en.json`` is used.
 
@@ -106,14 +106,14 @@ for the changes to fully take effect::
     paster search-index rebuild
 
 
-ckanext.eurovoc.category_field_name
+ckanext.ap11theme.category_field_name
 +++++++++++++++++++++++++++++++++++
 
 It is sometimes necessary to customise the dataset schema field name being
-used to store the eurovoc category value. This can be set in the ckan config,
+used to store the dcat ap11 theme category value. This can be set in the ckan config,
 e.g.::
 
-    ckanext.eurovoc.category_field_name = theme
+    ckanext.ap11theme.category_field_name = theme
 
 The default value is ``eurovoc_category``.
 
@@ -124,11 +124,11 @@ values assigned to the old field name.
 Search facet
 ++++++++++++
 
-The Eurovoc plugin will add a faceted search option to dataset, group and
+The dcat ap11 themes plugin will add a faceted search option to dataset, group and
 organization search page.
 
-You can make adjustments to the Eurovoc facet in your own extension by
-updating the ``eurovoc_category_label`` entry in the facet dictionary using
+You can make adjustments to the ap11 themes facet in your own extension by
+updating the ``ap11theme_category_label`` entry in the facet dictionary using
 the appropriate ``IFacets`` interface methods.
 
 
@@ -143,60 +143,5 @@ To run the tests, do::
 To run the tests and produce a coverage report, first make sure you have
 coverage installed in your virtualenv (``pip install coverage``) then run::
 
-    nosetests --nologcapture --with-pylons=test.ini --with-coverage --cover-package=ckanext.eurovoc --cover-inclusive --cover-erase --cover-tests
+    nosetests --nologcapture --with-pylons=test.ini --with-coverage --cover-package=ckanext.ap11theme --cover-inclusive --cover-erase --cover-tests
 
-
------------------------------------
-Registering ckanext-eurovoc on PyPI
------------------------------------
-
-ckanext-eurovoc should be availabe on PyPI as
-https://pypi.python.org/pypi/ckanext-eurovoc. If that link doesn't work, then
-you can register the project on PyPI for the first time by following these
-steps:
-
-1. Create a source distribution of the project::
-
-     python setup.py sdist
-
-2. Register the project::
-
-     python setup.py register
-
-3. Upload the source distribution to PyPI::
-
-     python setup.py sdist upload
-
-4. Tag the first release of the project on GitHub with the version number from
-   the ``setup.py`` file. For example if the version number in ``setup.py`` is
-   0.0.1 then do::
-
-       git tag 0.0.1
-       git push --tags
-
-
-------------------------------------------
-Releasing a New Version of ckanext-eurovoc
-------------------------------------------
-
-ckanext-eurovoc is availabe on PyPI as https://pypi.python.org/pypi/ckanext-eurovoc.
-To publish a new version to PyPI follow these steps:
-
-1. Update the version number in the ``setup.py`` file.
-   See `PEP 440 <http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers>`_
-   for how to choose version numbers.
-
-2. Create a source distribution of the new version::
-
-     python setup.py sdist
-
-3. Upload the source distribution to PyPI::
-
-     python setup.py sdist upload
-
-4. Tag the new release of the project on GitHub with the version number from
-   the ``setup.py`` file. For example if the version number in ``setup.py`` is
-   0.0.2 then do::
-
-       git tag 0.0.2
-       git push --tags

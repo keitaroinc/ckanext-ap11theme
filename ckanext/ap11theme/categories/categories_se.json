@@ -1,0 +1,67 @@
+[
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/AGRI",
+        "label": "Jordbruk, fiske, skogsbruk och livsmedel",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/ECON",
+        "label": "Ekonomi och finans",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/EDUC",
+        "label": "Utbildning, kultur och sport",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/ENER",
+        "label": "Energi",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/ENVI",
+        "label": "Environment",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/GOVE",
+        "label": "Regeringen och den offentliga sektorn",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/HEAL",
+        "label": "Hälsa",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/INTR",
+        "label": "Internationella frågor",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/JUST",
+        "label": "Rättvisa, rättsliga system och allmän säkerhet",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/SOCI",
+        "label": "Befolkning och samhälle",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/REGI",
+        "label": "Regioner och städer",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/TECH",
+        "label": "Vetenskap och teknik",
+        "additional_search_terms": []
+    },
+    {
+        "id": "http://publications.europa.eu/resource/authority/data-theme/TRAN",
+        "label": "Transport",
+        "additional_search_terms": []
+    }
+]
